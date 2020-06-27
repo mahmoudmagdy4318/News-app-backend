@@ -1,4 +1,4 @@
-const UserModel = require("../models");
+const UserModel = require("../../Users/models");
 const CustomError = require("../../../error-handling/CustomError");
 const errorCodes = require("../../../error-handling/errorCodes");
 module.exports = function authController() {

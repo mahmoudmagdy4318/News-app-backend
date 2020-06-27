@@ -19,7 +19,7 @@ const UserModel = new Schema({
     index: { unique: [true, "this email already taken!"] },
   },
   password: { type: "String", required: [true, "password is required"] },
-  resourses: [{ type: "String" }],
+  sources: [{ type: "String", unique: true }],
 });
 //add uniqueness to schema arrays
 UserModel.plugin(uniqueArrayPlugin);
@@ -53,10 +53,16 @@ UserModel.methods.generateToken = function () {
 };
 
 //verification of user's token
-const verifyToken = async (token) => {
+const verifyToken = (token) => {
+  return verify(token, process.env.SECRET_KEY);
+};
+//function to get current user loggedIn from his token
+UserModel.statics.getCurrentUserFromToken = async function (token) {
   try {
-    const payload = await verify(token, process.env.SECRET_KEY);
-    return payload;
+    const payload = await verifyToken(token);
+    return this.findOne({
+      _id: payload._id,
+    });
   } catch (error) {
     throw new CustomError(
       "AUTHORIZATION_ERROR",
@@ -64,26 +70,6 @@ const verifyToken = async (token) => {
       "you are not authorized please login to complete this action"
     );
   }
-};
-//function to get current user loggedIn from his token
-UserModel.statics.getCurrentUserFromToken = function (token) {
-  const payload = verifyToken(token);
-  return this.findOne({
-    _id: payload._id,
-  });
-
-  //   if (!currentUser)
-  //     throw new CustomError(true, "INVALID_USER", 403, "user not found");
-  //   // currentuser = currentUser[0];
-  //   return currentuser;
-  // } catch (error) {
-  //   throw new CustomError(
-  //     true,
-  //     "AUTHORIZATION_ERROR",
-  //     401,
-  //     "you are not authorized please login to complete this action"
-  //   );
-  // }
 };
 
 module.exports = mongoose.model("User", UserModel);

@@ -1,9 +1,9 @@
 const express = require("express");
 const { login, register } = require("../controllers")();
-const { vaildateSignup, vaildateUpdateUserData } = require("../validations");
+const { vaildateSignup } = require("../validations");
 const checkIfLoggedIn = require("../../../middlewares/alreadyLoggedInMiddleware");
 
-authRouter = express.Router();
+const authRouter = express.Router();
 
 authRouter.post("/signup", checkIfLoggedIn, vaildateSignup, register);
 
