@@ -12,7 +12,7 @@ const errorHandler = require("./error-handling");
 //getting port and databaseUrl from env variabes
 const port = process.env.PORT || 8080;
 const databaseUrl = process.env.DATABASEURL;
-const redisClient = require("./Redis");
+const { client: redisClient } = require("./Redis");
 
 app.use(cors());
 
