@@ -1,7 +1,6 @@
 const NewsAPI = require("newsapi");
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 const { get, set, expire } = require("../../../Redis");
-const _ = require("lodash");
 const { prepareResponse } = require("./helpers");
 module.exports = function sourcesController() {
   //function to get all news sources paginated and filtered if needed
@@ -19,14 +18,13 @@ module.exports = function sourcesController() {
     const redisSources = await get("sources");
 
     if (redisSources) {
-      const sources = _.filter(JSON.parse(redisSources), filter);
-      return res.json(prepareResponse(sources, page));
+      return res.json(prepareResponse(JSON.parse(redisSources), page, filter));
     }
-    //get the sources from the api if they are not cached yet or expired
-    const { sources } = await newsapi.v2.sources(filter);
+    //get the sources from the api if they are not cached yet or expired and cache them
+    const { sources } = await newsapi.v2.sources();
     await set("sources", JSON.stringify(sources));
     await expire("sources", 86400);
-    res.json(res.json(prepareResponse(sources, page)));
+    res.json(prepareResponse(sources, page, filter));
   };
   return { list };
 };

@@ -1,6 +1,6 @@
 const express = require("express");
 const { login, register } = require("../controllers")();
-const { vaildateSignup } = require("../validations");
+const { vaildateSignup } = require("../../Users/validations");
 const checkIfLoggedIn = require("../../../middlewares/alreadyLoggedInMiddleware");
 
 const authRouter = express.Router();

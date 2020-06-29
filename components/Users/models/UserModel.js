@@ -44,7 +44,7 @@ UserModel.methods.generateToken = function () {
   return sign(
     {
       _id: this._id,
-      username: this.fullname,
+      fullname: this.fullname,
       email: this.email,
     },
     process.env.SECRET_KEY,

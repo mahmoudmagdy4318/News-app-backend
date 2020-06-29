@@ -30,6 +30,7 @@ const updateUserSchema = Joi.object({
     .pattern(/^[a-zA-Z0-9]{3,30}$/)
     .min(6),
   resourses: Joi.array().items(Joi.string()).unique(),
+  action: Joi.string(),
 });
 
 const vaildateSignup = (req, res, next) => {

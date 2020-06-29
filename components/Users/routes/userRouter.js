@@ -1,5 +1,6 @@
 const express = require("express");
 const { authorizeUser, authorizeUserActions } = require("../../../middlewares");
+const { vaildateUpdateUserData } = require("../../Users/validations");
 const {
   getUserSources,
   updateUserSources,
@@ -14,5 +15,10 @@ userRouter.get("/:id/news", authorizeUserActions, getUserNews);
 
 userRouter.get("/:id/sources", authorizeUserActions, getUserSources);
 
-userRouter.patch("/:id/sources/:sid", authorizeUserActions, updateUserSources);
+userRouter.patch(
+  "/:id/sources/:sid",
+  authorizeUserActions,
+  vaildateUpdateUserData,
+  updateUserSources
+);
 module.exports = userRouter;
