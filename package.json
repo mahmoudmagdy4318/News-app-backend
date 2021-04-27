@@ -26,7 +26,7 @@
     "mongoose": "^5.9.19",
     "mongoose-unique-array": "^0.3.4",
     "newsapi": "^2.4.0",
-    "redis": "^3.0.2"
+    "redis": "^3.1.1"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
